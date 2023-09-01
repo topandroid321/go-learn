@@ -26,8 +26,6 @@ func AddCustomer(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.JSON(newCustommer)
-
 	stripeClient.InitStripe()
 	params := &stripe.CustomerParams{
 		Email:       stripe.String(newCustommer.Email),
