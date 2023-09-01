@@ -2,6 +2,7 @@ package ApiRoutes
 
 import (
 	"go-learning/src/Api/handlers/Index"
+	"go-learning/src/Api/handlers/Tai"
 	"go-learning/src/Api/handlers/Users"
 	"go-learning/src/Client"
 
@@ -13,4 +14,5 @@ func InitRoutes() {
 
 	http.Get("/", func(c *fiber.Ctx) error { return Index.Index(c) })
 	http.Get("/users", func(c *fiber.Ctx) error { return Users.GetUsers(c) })
+	http.Get("/tai", func(c *fiber.Ctx) error { return Tai.GetTai(c) })
 }
