@@ -5,13 +5,17 @@ import (
 	"go-learning/src/Api/handlers/Index"
 	"go-learning/src/Api/handlers/Tai"
 	"go-learning/src/Api/handlers/Users"
-	"go-learning/src/Client"
+	Middleware "go-learning/src/Api/middleware"
+
+	// "go-learning/src/Client"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
-func InitRoutes() {
-	http := Client.App
+func InitRoutes(http *fiber.App) {
+	http.Use(func(c *fiber.Ctx) error { return Middleware.CheckAuth(c) }) // auth middleware check
+	http.Use(logger.New())                                                // logging
 
 	http.Get("/", func(c *fiber.Ctx) error { return Index.Index(c) })
 	http.Get("/users", func(c *fiber.Ctx) error { return Users.AddUsers(c) })
