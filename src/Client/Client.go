@@ -3,12 +3,12 @@ package Client
 import (
 	"fmt"
 
+	ApiRoutes "go-learning/src/Api"
 	"go-learning/src/Interfaces"
 
 	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
 )
 
@@ -28,10 +28,7 @@ func RunServer(params Interfaces.SystemInterface) {
 		AllowHeaders: params.CorsAllowHeader,
 	}))
 
-	App.Use(logger.New())
-	// App.Use(logger.New(logger.Config{
-	// 	Format: "[${ip}]:${port} ${status} - ${method} ${path}\n",
-	// }))
+	ApiRoutes.InitRoutes(App)
 	App.Get("/metrics", monitor.New())
 
 	App.Listen("localhost:" + fmt.Sprint(params.Port))
