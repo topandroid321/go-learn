@@ -17,6 +17,8 @@ func InitRoutes() {
 	http.Get("/users", func(c *fiber.Ctx) error { return Users.AddUsers(c) })
 	http.Get("/tai", func(c *fiber.Ctx) error { return Tai.GetTai(c) })
 
-	Billings := http.Group("/billing", func(c *fiber.Ctx) error { return c.Next() })
+	// Billings Routes
+	Billings := http.Group("billing", func(c *fiber.Ctx) error { return c.Next() })
 	Billings.Post("/create-customer", func(c *fiber.Ctx) error { return Billing.AddCustomer(c) })
+	Billings.Get("/get-customer", func(c *fiber.Ctx) error { return Billing.GetCustomer(c) })
 }
