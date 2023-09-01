@@ -19,4 +19,8 @@ func InitRoutes(http *fiber.App) {
 	Billings := http.Group("billing", func(c *fiber.Ctx) error { return c.Next() })
 	Billings.Post("/create-customer", func(c *fiber.Ctx) error { return Billing.AddCustomer(c) })
 	Billings.Get("/get-customer", func(c *fiber.Ctx) error { return Billing.GetCustomer(c) })
+
+	// Users Routes Mysql
+	http.Get("/test", func(c *fiber.Ctx) error { return Users.TestConnection(c) })
+	http.Get("/users/:id", func(c *fiber.Ctx) error { return Users.GetUserDetails(c) })
 }
