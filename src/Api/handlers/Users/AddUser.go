@@ -5,6 +5,5 @@ import (
 )
 
 func AddUsers(c *fiber.Ctx) error {
-	c.SendStatus(200)
-	return c.SendString("Add Users !")
+	return c.Status(200).SendString("Add Users !")
 }

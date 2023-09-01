@@ -5,21 +5,27 @@ import (
 	GraphqlClient "go-learning/src/Utils"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/log"
 )
 
 func GetUsers(c *fiber.Ctx) error {
 
 	var query struct {
-		Me struct {
-			Name string
+		users struct {
+			id any
 		}
 	}
 
-	client := GraphqlClient.Client
+	headers := c.GetReqHeaders()
+	token := headers["Authorization"]
+
+	client := GraphqlClient.CreateClient(token)
 	err := client.Query(context.Background(), &query, nil)
 	if err != nil {
-		// Handle error.
-		panic(err)
+		log.Error(err)
+		log.Debug(query)
+		return c.Status(500).SendString("Something went wrong : " + err.Error())
 	}
-	return c.SendString("users")
+	log.Debug(query.users.id)
+	return c.SendString("hello")
 }
