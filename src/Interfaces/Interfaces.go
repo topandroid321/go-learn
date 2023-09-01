@@ -5,3 +5,9 @@ type SystemInterface struct {
 	CorsAllowHeader string
 	Port            int
 }
+
+type AddCustomer struct {
+	Name        string `json:"name"`
+	Email       string `json:"email"`
+	Description string `json:"description"`
+}

@@ -1,4 +1,4 @@
-package GraphqlClient
+package Utils
 
 import "github.com/hasura/go-graphql-client"
 
