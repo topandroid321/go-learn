@@ -10,12 +10,12 @@ import (
 )
 
 
-func GenerateJwtToken() string {
+func GenerateJwtToken(username string) string {
 	jwtSecret := os.Getenv("JWT_SECRET")
 	token  := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
 	claims["authorized"] = true
-	claims["user"] = "Topan"
+	claims["user"] = username
 	claims["exp"] = time.Now().Add(time.Minute * 30).Unix()
 
 	tokenString, err := token.SignedString([]byte(jwtSecret))

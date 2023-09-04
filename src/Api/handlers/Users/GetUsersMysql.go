@@ -95,8 +95,17 @@ func TestConnection(c *fiber.Ctx) error {
 }
 
 func GenerateToken(c *fiber.Ctx) error{
-	// Create token
-	token:= Jwt.GenerateJwtToken()
+	dataReq:= new(User)
+	err := c.BodyParser(dataReq)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"statusCode": fiber.StatusBadRequest,
+			"error":      "Cannot parse JSON",
+		})
+	}
+	username := dataReq.Username
+
+	token:= Jwt.GenerateJwtToken(username)
 	
 	// verify token
 	verifyToken, status := Jwt.VerifyJwtToken(token)
