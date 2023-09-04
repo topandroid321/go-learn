@@ -58,7 +58,7 @@ func ExampleGetPagination(c *fiber.Ctx) error {
 	var query struct {
 		Users []struct {
 			ID any `json:"id"`
-		} `graphql:"users(limit: 2, offset: 0)"`
+		} `graphql:"users(where: {id: {_eq: \"6cf18a5f-3333-428f-8d76-8abbdd4b168f\"}}, limit: 2, offset: 0, order_by: {id: desc})"`
 	}
 
 	client := GraphqlClient.CreateAdmin()
