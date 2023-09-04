@@ -15,14 +15,14 @@ func AddCustomer(c *fiber.Ctx) error {
 
 	if err := c.BodyParser(&newCustommer); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"statusCode": 400,
+			"statusCode": fiber.StatusBadRequest,
 			"error":      "Cannot parse JSON",
 		})
 	}
 
 	if newCustommer.Name == "" || newCustommer.Email == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"statusCode": 400,
+			"statusCode": fiber.StatusBadRequest,
 			"error":      "Nama, Email, is eequired",
 		})
 	}
@@ -39,7 +39,7 @@ func AddCustomer(c *fiber.Ctx) error {
 		"statusCode": 200,
 		"data": fiber.Map{
 			"valid":       true,
-			"messages":    "Success Create Customer",
+			"messages":    "success-create-customer",
 			"customer_id": cus.ID,
 		},
 	}
