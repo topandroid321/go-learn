@@ -17,13 +17,15 @@ func GetCustomer(c *fiber.Ctx) error {
 	custommer := GetCustomerId{}
 	if err := c.BodyParser(&custommer); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Cannot parse JSON",
+			"statusCode": fiber.StatusBadRequest,
+			"error":      "Cannot parse JSON",
 		})
 	}
 
 	if custommer.Customer_id == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "customer_id, is Required",
+			"statusCode": fiber.StatusBadRequest,
+			"error":      "customer_id, is Required",
 		})
 	}
 
@@ -31,10 +33,10 @@ func GetCustomer(c *fiber.Ctx) error {
 	cus, _ := customer.Get(custommer.Customer_id, nil)
 
 	response := fiber.Map{
-		"statusCode": 200,
+		"statusCode": fiber.StatusOK,
 		"data": fiber.Map{
 			"valid":       true,
-			"messages":    "Success Get Data Customer",
+			"messages":    "success-get-data-customer",
 			"customer_id": cus.ID,
 			"email":       cus.Email,
 			"name":        cus.Name,
