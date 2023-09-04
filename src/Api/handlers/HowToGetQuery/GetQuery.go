@@ -1,4 +1,4 @@
-package GetQuery
+package HowToGetQuery
 
 import (
 	"context"
