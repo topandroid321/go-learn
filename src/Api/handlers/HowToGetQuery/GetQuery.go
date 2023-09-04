@@ -2,6 +2,7 @@ package HowToGetQuery
 
 import (
 	"context"
+	"encoding/json"
 	GraphqlClient "go-learning/src/Utils"
 
 	"github.com/gofiber/fiber/v2"
@@ -53,6 +54,7 @@ func ExampleGetUsingUser(c *fiber.Ctx) error {
 	return c.JSON(query)
 }
 
+// EXAMPLE HOW TO GET QUERY USING FILTER PAGINATION (LIMIT, OFFSET)
 func ExampleGetPagination(c *fiber.Ctx) error {
 
 	var query struct {
@@ -71,4 +73,41 @@ func ExampleGetPagination(c *fiber.Ctx) error {
 
 	log.Debug(query.Users)
 	return c.JSON(query)
+}
+
+// EXAMPLE HOW TO GET QUERY USING WHERE FILTER
+func ExampleGetWhere(c *fiber.Ctx) error {
+	query := `
+		query {
+			users(where: { username: { _ilike: "%test%" }}, limit: 2, offset: 0) {
+				id
+				username
+			}
+		}
+	`
+
+	// Create a struct to unmarshal the response data into
+	var res struct {
+		Users []struct {
+			ID       string `json:"id"`
+			Username string `json:"username"`
+		} `json:"users"`
+	}
+
+	// Create a GraphQL client
+	client := GraphqlClient.CreateAdmin()
+
+	// Execute the GraphQL query and capture the raw response
+	raw, err := client.ExecRaw(context.Background(), query, map[string]interface{}{})
+	if err != nil {
+		panic(err)
+	}
+
+	// Unmarshal the raw response into the 'res' struct
+	if err := json.Unmarshal(raw, &res); err != nil {
+		panic(err)
+	}
+
+	// Return the 'res' struct as JSON response
+	return c.JSON(res)
 }
