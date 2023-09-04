@@ -3,7 +3,7 @@ package Redis
 import (
 	"context"
 
-	Redis "go-learning/src/Utils"
+	"go-learning/src/Utils/RedisClient"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -17,7 +17,7 @@ func GetRedisByKey(c *fiber.Ctx) error {
 	ctx := context.Background()
 
 	// CONNECT TO REDIS
-	errRedis := Redis.InitRedisConnection()
+	errRedis := RedisClient.InitRedisConnection()
 	if errRedis != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"statusCode": fiber.StatusBadRequest,
@@ -40,7 +40,7 @@ func GetRedisByKey(c *fiber.Ctx) error {
 		})
 	}
 
-	data, errRedis := Redis.Client.Get(ctx, key.Key).Result()
+	data, errRedis := RedisClient.Client.Get(ctx, key.Key).Result()
 	if errRedis != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"statusCode": fiber.StatusBadRequest,
