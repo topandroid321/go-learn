@@ -1,4 +1,4 @@
-package Utils
+package StripeClient
 
 import "github.com/stripe/stripe-go"
 

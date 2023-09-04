@@ -1,6 +1,7 @@
-package Utils
+package MysqlClient
 
 import (
+	"go-learning/src/Utils/Functions"
 	"os"
 
 	"github.com/gofiber/storage/mysql"
@@ -33,10 +34,10 @@ func DatabaseMod() *mysql.Storage {
 		panic("Error loading .env file")
 	}
 
-	HOST     := os.Getenv("DB_HOST")
-	USER     := os.Getenv("DB_USERNAME")
+	HOST := os.Getenv("DB_HOST")
+	USER := os.Getenv("DB_USERNAME")
 	PASSWORD := os.Getenv("DB_PASSWORD")
-	PORT     := 3390
+	PORT := Functions.StoI(os.Getenv("DB_PORT"))
 	DATABASE := os.Getenv("DB_DATABASE3")
 
 	// Create a new storage client
@@ -50,5 +51,3 @@ func DatabaseMod() *mysql.Storage {
 
 	return storage
 }
-
-

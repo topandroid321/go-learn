@@ -1,4 +1,4 @@
-package Utils
+package Functions
 
 import (
 	"strconv"
@@ -13,4 +13,11 @@ func StoI(s string) int {
 		return -0
 	}
 	return result
+}
+
+func IsEmpty(value any, defaultVal any) any {
+	if value == nil || value == "" {
+		return defaultVal
+	}
+	return value
 }

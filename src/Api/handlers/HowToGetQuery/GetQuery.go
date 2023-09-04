@@ -3,7 +3,9 @@ package HowToGetQuery
 import (
 	"context"
 	"encoding/json"
-	GraphqlClient "go-learning/src/Utils"
+	"fmt"
+	"go-learning/src/Utils/Functions"
+	"go-learning/src/Utils/GraphqlClient"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
@@ -77,20 +79,28 @@ func ExampleGetPagination(c *fiber.Ctx) error {
 
 // EXAMPLE HOW TO GET QUERY USING WHERE FILTER
 func ExampleGetWhere(c *fiber.Ctx) error {
-	query := `
+
+	email := "%" + c.Query("email") + "%"
+	// limit := c.Query("limit")
+	limit := Functions.IsEmpty(c.Query("limit"), 2)
+	offset := Functions.IsEmpty(c.Query("offset"), 0)
+
+	query := fmt.Sprintf(`
 		query {
-			users(where: { username: { _ilike: "%test%" }}, limit: 2, offset: 0) {
+			users(where: { email: { _ilike: "%s" }}, limit: %d, offset: %d) {
 				id
-				username
+				email
 			}
 		}
-	`
+	`, email, limit, offset)
+
+	log.Debug(query)
 
 	// Create a struct to unmarshal the response data into
 	var res struct {
 		Users []struct {
-			ID       string `json:"id"`
-			Username string `json:"username"`
+			ID    string `json:"id"`
+			Email string `json:"email"`
 		} `json:"users"`
 	}
 

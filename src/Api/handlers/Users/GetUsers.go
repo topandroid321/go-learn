@@ -2,7 +2,8 @@ package Users
 
 import (
 	"context"
-	GraphqlClient "go-learning/src/Utils"
+	"fmt"
+	"go-learning/src/Utils/GraphqlClient"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
@@ -24,8 +25,8 @@ func GetUsers(c *fiber.Ctx) error {
 	if err != nil {
 		log.Error(err)
 		log.Debug(query)
-		return c.Status(500).SendString("Something went wrong : " + err.Error())
+		return c.Status(fiber.StatusOK).SendString("Something went wrong : " + err.Error())
 	}
 	log.Debug(query.users.id)
-	return c.SendString("hello")
+	return c.SendString(fmt.Sprint(query.users.id))
 }

@@ -2,7 +2,7 @@ package Billings
 
 import (
 	"go-learning/src/Interfaces"
-	stripeClient "go-learning/src/Utils"
+	"go-learning/src/Utils/StripeClient"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/stripe/stripe-go"
@@ -27,7 +27,7 @@ func AddCustomer(c *fiber.Ctx) error {
 		})
 	}
 
-	stripeClient.InitStripe()
+	StripeClient.InitStripe()
 	params := &stripe.CustomerParams{
 		Email:       stripe.String(newCustommer.Email),
 		Name:        stripe.String(newCustommer.Name),

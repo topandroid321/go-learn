@@ -1,7 +1,7 @@
 package Billings
 
 import (
-	stripeClient "go-learning/src/Utils"
+	"go-learning/src/Utils/StripeClient"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/stripe/stripe-go/customer"
@@ -12,7 +12,7 @@ type GetCustomerId struct {
 }
 
 func GetCustomer(c *fiber.Ctx) error {
-	stripeClient.InitStripe()
+	StripeClient.InitStripe()
 
 	custommer := GetCustomerId{}
 	if err := c.BodyParser(&custommer); err != nil {
@@ -27,7 +27,7 @@ func GetCustomer(c *fiber.Ctx) error {
 		})
 	}
 
-	stripeClient.InitStripe()
+	StripeClient.InitStripe()
 	cus, _ := customer.Get(custommer.Customer_id, nil)
 
 	response := fiber.Map{
