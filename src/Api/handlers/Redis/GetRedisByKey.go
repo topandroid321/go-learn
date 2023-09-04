@@ -3,9 +3,8 @@ package Redis
 import (
 	"context"
 
-	"go-learning/src/Utils/RedisClient"
-
 	"github.com/gofiber/fiber/v2"
+	"github.com/redis/go-redis/v9"
 )
 
 type GetRedisKey struct {
@@ -17,14 +16,11 @@ func GetRedisByKey(c *fiber.Ctx) error {
 	ctx := context.Background()
 
 	// CONNECT TO REDIS
-	errRedis := RedisClient.InitRedisConnection()
-	if errRedis != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"statusCode": fiber.StatusBadRequest,
-			"error":      "Failed connect to redis",
-		})
-	}
-	// defer Redis.CloseRedisConnection()
+	RedisClient := redis.NewClient(&redis.Options{
+		Addr:     "194.233.95.186:6381",
+		Password: "eP5gtsmn8SSSUfZQBkJIcaj0pcy8t+c4XPuiPik8gxMOan6XoTCLQuDXV8g+nLRIYpuAYdgywu9gJB+X",
+		DB:       0,
+	})
 
 	if errBody := c.BodyParser(&key); errBody != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -40,7 +36,7 @@ func GetRedisByKey(c *fiber.Ctx) error {
 		})
 	}
 
-	data, errRedis := RedisClient.Client.Get(ctx, key.Key).Result()
+	data, errRedis := RedisClient.Get(ctx, key.Key).Result()
 	if errRedis != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"statusCode": fiber.StatusBadRequest,
