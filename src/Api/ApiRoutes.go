@@ -1,8 +1,8 @@
 package ApiRoutes
 
 import (
-	Billing "go-learning/src/Api/handlers/Billings"
-	HowToGetQuery "go-learning/src/Api/handlers/HowToGetQuery"
+	"go-learning/src/Api/handlers/Billings"
+	"go-learning/src/Api/handlers/HowToGetQuery"
 	"go-learning/src/Api/handlers/Index"
 	"go-learning/src/Api/handlers/Redis"
 	"go-learning/src/Api/handlers/Users"
@@ -21,9 +21,9 @@ func InitRoutes(http *fiber.App) {
 	http.Get("/get-where", func(c *fiber.Ctx) error { return HowToGetQuery.ExampleGetWhere(c) })
 
 	// Billings Routes Stripe
-	Billings := http.Group("billing", func(c *fiber.Ctx) error { return c.Next() })
-	Billings.Post("/create-customer", func(c *fiber.Ctx) error { return Billing.AddCustomer(c) })
-	Billings.Get("/get-customer", func(c *fiber.Ctx) error { return Billing.GetCustomer(c) })
+	BillingGroup := http.Group("billing", func(c *fiber.Ctx) error { return c.Next() })
+	BillingGroup.Post("/create-customer", func(c *fiber.Ctx) error { return Billings.AddCustomer(c) })
+	BillingGroup.Get("/get-customer", func(c *fiber.Ctx) error { return Billings.GetCustomer(c) })
 
 	// Users Routes Mysql
 	http.Get("/test", func(c *fiber.Ctx) error { return Users.TestConnection(c) })

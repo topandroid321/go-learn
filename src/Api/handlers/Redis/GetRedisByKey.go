@@ -2,9 +2,9 @@ package Redis
 
 import (
 	"context"
+	"go-learning/src/Utils/RedisClient"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/redis/go-redis/v9"
 )
 
 type GetRedisKey struct {
@@ -12,35 +12,34 @@ type GetRedisKey struct {
 }
 
 func GetRedisByKey(c *fiber.Ctx) error {
-	key := GetRedisKey{}
+	// key := GetRedisKey{}
 	ctx := context.Background()
+	Client := RedisClient.Client
 
 	// CONNECT TO REDIS
-	RedisClient := redis.NewClient(&redis.Options{
-		Addr:     "194.233.95.186:6381",
-		Password: "eP5gtsmn8SSSUfZQBkJIcaj0pcy8t+c4XPuiPik8gxMOan6XoTCLQuDXV8g+nLRIYpuAYdgywu9gJB+X",
-		DB:       0,
-	})
+	// RedisClient := RedisClient.InitRedisConnection()
 
-	if errBody := c.BodyParser(&key); errBody != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"statusCode": fiber.StatusBadRequest,
-			"error":      "Cannot parse JSON",
-		})
-	}
+	// if errBody := c.BodyParser(&key); errBody != nil {
+	// 	return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+	// 		"statusCode": fiber.StatusBadRequest,
+	// 		"error":      "Cannot parse JSON",
+	// 	})
+	// }
 
-	if key.Key == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"statusCode": fiber.StatusBadRequest,
-			"error":      "key, is Required",
-		})
-	}
+	// if key.Key == "" {
+	// 	return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+	// 		"statusCode": fiber.StatusBadRequest,
+	// 		"error":      "key, is Required",
+	// 	})
+	// }
 
-	data, errRedis := RedisClient.Get(ctx, key.Key).Result()
+	keyParam := c.Query("key")
+
+	data, errRedis := Client.Get(ctx, keyParam).Result()
 	if errRedis != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"statusCode": fiber.StatusBadRequest,
-			"error":      "Failed get data from redis",
+			"error":      "Failed get data from redis: " + errRedis.Error(),
 		})
 	}
 
@@ -49,7 +48,7 @@ func GetRedisByKey(c *fiber.Ctx) error {
 		"data": fiber.Map{
 			"valid":    true,
 			"messages": "success-get-data-redis",
-			"key":      key.Key,
+			"key":      keyParam,
 			"data":     data,
 		},
 	})
