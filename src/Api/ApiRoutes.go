@@ -2,7 +2,7 @@ package ApiRoutes
 
 import (
 	Billing "go-learning/src/Api/handlers/Billings"
-	GetQuery "go-learning/src/Api/handlers/HowToGetQuery"
+	HowToGetQuery "go-learning/src/Api/handlers/HowToGetQuery"
 	"go-learning/src/Api/handlers/Index"
 	"go-learning/src/Api/handlers/Redis"
 	"go-learning/src/Api/handlers/Users"
@@ -15,8 +15,10 @@ func InitRoutes(http *fiber.App) {
 
 	// Users Routes Hasura Graphql
 	http.Get("/users", func(c *fiber.Ctx) error { return Users.AddUsers(c) })
-	http.Get("/get-admin", func(c *fiber.Ctx) error { return GetQuery.ExampleGetUsingAdmin(c) })
-	http.Get("/get-user", func(c *fiber.Ctx) error { return GetQuery.ExampleGetUsingUser(c) })
+	http.Get("/get-admin", func(c *fiber.Ctx) error { return HowToGetQuery.ExampleGetUsingAdmin(c) })
+	http.Get("/get-user", func(c *fiber.Ctx) error { return HowToGetQuery.ExampleGetUsingUser(c) })
+	http.Get("/get-pagination", func(c *fiber.Ctx) error { return HowToGetQuery.ExampleGetPagination(c) })
+	http.Get("/get-where", func(c *fiber.Ctx) error { return HowToGetQuery.ExampleGetWhere(c) })
 
 	// Billings Routes Stripe
 	Billings := http.Group("billing", func(c *fiber.Ctx) error { return c.Next() })
