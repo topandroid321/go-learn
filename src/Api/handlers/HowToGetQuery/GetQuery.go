@@ -52,3 +52,23 @@ func ExampleGetUsingUser(c *fiber.Ctx) error {
 	log.Debug(query.Users)
 	return c.JSON(query)
 }
+
+func ExampleGetPagination(c *fiber.Ctx) error {
+
+	var query struct {
+		Users []struct {
+			ID any `json:"id"`
+		} `graphql:"users(limit: 2, offset: 0)"`
+	}
+
+	client := GraphqlClient.CreateAdmin()
+	err := client.Query(context.Background(), &query, nil)
+	if err != nil {
+		log.Error(err)
+		log.Debug(query)
+		return c.Status(fiber.StatusBadGateway).SendString("Something went wrong : " + err.Error())
+	}
+
+	log.Debug(query.Users)
+	return c.JSON(query)
+}

@@ -14,6 +14,7 @@ func InitRoutes(http *fiber.App) {
 	http.Get("/users", func(c *fiber.Ctx) error { return Users.AddUsers(c) })
 	http.Get("/get-admin", func(c *fiber.Ctx) error { return GetQuery.ExampleGetUsingAdmin(c) })
 	http.Get("/get-user", func(c *fiber.Ctx) error { return GetQuery.ExampleGetUsingUser(c) })
+	http.Get("/get-pagination", func(c *fiber.Ctx) error { return GetQuery.ExampleGetPagination(c) })
 
 	// Billings Routes
 	Billings := http.Group("billing", func(c *fiber.Ctx) error { return c.Next() })
